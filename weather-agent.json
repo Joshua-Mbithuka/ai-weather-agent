@@ -1,0 +1,163 @@
+{
+  "name": "Weather Forecast",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a helpful morning assistant. Use the get_weather tool to fetch \n   the current weather in Nairobi City, then write a friendly morning briefing.\n\n   Include:\n   - A warm greeting\n   - Current temperature and how it feels\n   - Weather condition in plain English\n   - 2-3 practical tips for the day\n   - A motivating closing line",
+        "options": {
+          "systemMessage": "=You are a helpful morning assistant. Based on the following weather data, \n  write a friendly, conversational morning weather briefing for Nairobi. \n\n  Include:\n  - A warm greeting\n  - Current temperature and how it feels\n  - Weather condition in plain English\n  - 2-3 practical tips for the day (e.g. what to wear, whether to carry an umbrella, good for outdoor activities etc.)\n  - A motivating closing line\n\n  Weather data: {{ JSON.stringify($json) }}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        80,
+        -48
+      ],
+      "id": "6412c926-13dc-433f-8c80-feb3255d68f4",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -208,
+        -32
+      ],
+      "id": "df96da91-03ed-4afd-a3e4-cf66800a11e8",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "sendTo": "joshuambithuka2014@gmail.com",
+        "subject": "☀️ Your AI Morning Weather Briefing",
+        "emailType": "text",
+        "message": "={{ $json.output }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        432,
+        -48
+      ],
+      "id": "a5e315f4-7efa-435e-8863-6a76ff982b3b",
+      "name": "Send a message",
+      "webhookId": "c95fc6e7-2cb5-486c-ad89-f9ea567483eb",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "hGMRvRaVCNuPyvX3",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "claude-3-haiku-20240307",
+          "mode": "list",
+          "cachedResultName": "Claude Haiku 3"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        144
+      ],
+      "id": "edaabc0d-5dfb-475f-8980-a25584530551",
+      "name": "Anthropic Chat Model",
+      "credentials": {
+        "anthropicApi": {
+          "id": "kqnFxe42F0sbwif3",
+          "name": "Anthropic account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "Fetches current weather data for Nairobi from OpenWeatherMap",
+        "url": "https://api.openweathermap.org/data/2.5/weather?q=Nairobi&appid=34d3b4b26fcb3dd2c337778e033e8cd5&units=metric",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.4,
+      "position": [
+        224,
+        160
+      ],
+      "id": "6d30f392-5cef-4e84-83f1-b038f37394f0",
+      "name": "get_weather"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get_weather": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "6a26f062-4845-4e97-8862-36d6bb8d7b54",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "aec25697cf88519813adb78f6f96a170ea536f923ac08d7e34e9fc91d6d88df0"
+  },
+  "id": "7glA9EYhue0hJjHw",
+  "tags": []
+}
