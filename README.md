@@ -120,4 +120,4 @@ To deploy your own:
 
 ## 📄 License
 
-MIT — feel free to fork, modify, and build on this!
+JoshuaMbithuka — feel free to fork, modify, and build on this!
