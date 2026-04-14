@@ -37,7 +37,7 @@
     },
     {
       "parameters": {
-        "sendTo": "joshuambithuka2014@gmail.com",
+        "sendTo": "youremailaddress",
         "subject": "☀️ Your AI Morning Weather Briefing",
         "emailType": "text",
         "message": "={{ $json.output }}",
@@ -87,7 +87,7 @@
     {
       "parameters": {
         "toolDescription": "Fetches current weather data for Nairobi from OpenWeatherMap",
-        "url": "https://api.openweathermap.org/data/2.5/weather?q=Nairobi&appid=34d3b4b26fcb3dd2c337778e033e8cd5&units=metric",
+        "url": "https://api.openweathermap.org/data/2.5/weather?q=Your_City&appid=Your_WeatherApp_Api_Key&units=metric",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequestTool",
